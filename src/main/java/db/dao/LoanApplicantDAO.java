@@ -77,6 +77,11 @@ public class LoanApplicantDAO implements IDAO<LoanApplicant, Long> {
         }
     }
 
+    /**
+     * Finds all loan applicants in the database.
+     *
+     * @return A list of loan applicants.
+     */
     @Override
     public List<LoanApplicant> findAll() {
         try {

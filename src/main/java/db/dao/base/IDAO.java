@@ -1,5 +1,8 @@
 package db.dao.base;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.List;
 
 /**
@@ -9,16 +12,31 @@ import java.util.List;
  * @param <ID>     The type of the primary key of the entity.
  */
 public interface IDAO<Entity, ID> {
+    static final Logger logger = LogManager.getLogger(IDAO.class);
+
     default void validate(Entity entity) {
+        logger.warn("Validate method unimplemented");
     }
 
-    void save(Entity entity);
+    default void save(Entity entity) {
+        logger.warn("Save method unimplemented");
+    }
 
-    Entity find(ID id);
+    default Entity find(ID id) {
+        logger.warn("Find method unimplemented");
+        return null;
+    }
 
-    List<Entity> findAll();
+    default List<Entity> findAll() {
+        logger.warn("Find all method unimplemented");
+        return null;
+    }
 
-    void update(Entity entity);
+    default void update(Entity entity) {
+        logger.warn("Update method unimplemented");
+    }
 
-    void delete(ID id);
+    default void delete(ID id) {
+        logger.warn("Delete method unimplemented");
+    }
 }
