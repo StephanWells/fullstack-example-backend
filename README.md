@@ -26,13 +26,13 @@ An API is exposed with endpoints to access and create the database entities.
    added to your PATH.
 3. Install [Maven](https://maven.apache.org/download.cgi). Ensure it has been added to your PATH.
 4. Create an `application.properties` file in `src/main/resources` with the following information:
-    1. **db.host**: The host name of MySQL service that is running, e.g. `jdbc:mysql://localhost`.
-    2. **db.port**: The port of the MySQL service that is running, e.g. `3306`.
-    3. **db.user**: Your MySQL username, e.g. `root`.
-    4. **db.password**: Your MySQL password, e.g. `1234`.
-    5. **db.name**: The name of the database that will be created, e.g. `loans`.
-    6. **api.host**: The host that the API will listen on, e.g. `localhost`.
-    7. **api.port**: The port that the API will listen on, e.g. `8080`.
+   1. **db.host**: The host name of MySQL service that is running, e.g. `jdbc:mysql://localhost`.
+   2. **db.port**: The port of the MySQL service that is running, e.g. `3306`.
+   3. **db.user**: Your MySQL username, e.g. `root`.
+   4. **db.password**: Your MySQL password, e.g. `1234`.
+   5. **db.name**: The name of the database that will be created, e.g. `loans`.
+   6. **api.host**: The host that the API will listen on, e.g. `localhost`.
+   7. **api.port**: The port that the API will listen on, e.g. `8080`.
 
 Example `application.properties` file:
 
@@ -53,7 +53,7 @@ api.port=8080
 To run the application, run the following command in the terminal:
 
 ```bash
-mvn exec:java
+mvn install exec:java
 ```
 
 To ensure that it works, check the logs. An API log saying `>> Listening on localhost:8080` (which will change depending
