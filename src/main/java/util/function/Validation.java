@@ -1,4 +1,4 @@
-package util;
+package util.function;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -73,4 +73,8 @@ public class Validation {
 
         return isValid;
     }
+
+    /**
+     * Validates a currency.
+     */
 }

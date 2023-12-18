@@ -13,7 +13,7 @@ public class IncomeSource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "applicant_id")
     private LoanApplicant loanApplicant;
 
@@ -23,23 +23,29 @@ public class IncomeSource {
     @Column(name = "monthly_income")
     private double monthlyIncome;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "currency")
+    private Currency currency;
+
     // Default constructor
     public IncomeSource() {
     }
 
     // Constructor when ID is not known (for record creation)
-    public IncomeSource(LoanApplicant loanApplicant, String incomeType, double monthlyIncome) {
+    public IncomeSource(LoanApplicant loanApplicant, String incomeType, double monthlyIncome, Currency currency) {
         this.loanApplicant = loanApplicant;
         this.incomeType = incomeType;
         this.monthlyIncome = monthlyIncome;
+        this.currency = currency;
     }
 
     // Constructor when ID is known (for record updating)
-    public IncomeSource(Long id, LoanApplicant loanApplicant, String incomeType, double monthlyIncome) {
+    public IncomeSource(Long id, LoanApplicant loanApplicant, String incomeType, double monthlyIncome, Currency currency) {
         this.id = id;
         this.loanApplicant = loanApplicant;
         this.incomeType = incomeType;
         this.monthlyIncome = monthlyIncome;
+        this.currency = currency;
     }
 
     public Long getId() {
@@ -72,5 +78,13 @@ public class IncomeSource {
 
     public void setMonthlyIncome(double monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }

@@ -1,7 +1,7 @@
-package defs;
+package defs.enums;
 
 import db.model.LoanType;
-import defs.base.IDef;
+import defs.enums.base.IDef;
 import org.jetbrains.annotations.NotNull;
 
 /**

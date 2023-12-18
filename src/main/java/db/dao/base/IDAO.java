@@ -1,5 +1,6 @@
 package db.dao.base;
 
+import defs.errors.NotImplementedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,28 +16,26 @@ public interface IDAO<Entity, ID> {
     static final Logger logger = LogManager.getLogger(IDAO.class);
 
     default void validate(Entity entity) {
-        logger.warn("Validate method unimplemented");
+        throw new NotImplementedException("Validate method unimplemented");
     }
 
     default void save(Entity entity) {
-        logger.warn("Save method unimplemented");
+        throw new NotImplementedException("Save method unimplemented");
     }
 
     default Entity find(ID id) {
-        logger.warn("Find method unimplemented");
-        return null;
+        throw new NotImplementedException("Find method unimplemented");
     }
 
     default List<Entity> findAll() {
-        logger.warn("Find all method unimplemented");
-        return null;
+        throw new NotImplementedException("Find all method unimplemented");
     }
 
     default void update(Entity entity) {
-        logger.warn("Update method unimplemented");
+        throw new NotImplementedException("Update method unimplemented");
     }
 
     default void delete(ID id) {
-        logger.warn("Delete method unimplemented");
+        throw new NotImplementedException("Delete method unimplemented");
     }
 }

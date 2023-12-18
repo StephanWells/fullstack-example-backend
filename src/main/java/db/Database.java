@@ -2,7 +2,7 @@ package db;
 
 import db.dao.CurrencyDAO;
 import db.dao.LoanTypeDAO;
-import defs.base.IDef;
+import defs.enums.base.IDef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -13,7 +13,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
-import util.Props;
+import util.config.Props;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static util.Util.getClasses;
+import static util.function.Util.getClasses;
 
 /**
  * A singleton class to provide an instance of the database to perform operations on.
@@ -45,7 +45,7 @@ public class Database {
     }
 
     /**
-     * Initialise the database. This method will import the properties, create the database, store the connection,
+     * initialise the database. This method will import the properties, create the database, store the connection,
      * initialise the Hibernate ORM, store the session factory for the database, and initialise/update definitions.
      */
     public static void initialise() {
@@ -55,7 +55,7 @@ public class Database {
     }
 
     /**
-     * Initialises the database instance with imported credentials.
+     * initialises the database instance with imported credentials.
      *
      * @throws ExceptionInInitializerError When the database fails to be initialised.
      */
@@ -65,7 +65,7 @@ public class Database {
         final String dbPassword = Props.getDbPassword();
         final String dbName = Props.getDbName();
 
-        // Initialise MySQL database
+        // initialise MySQL database
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
             String sqlCreateDB = "CREATE DATABASE IF NOT EXISTS " + dbName;
             try (PreparedStatement statement = connection.prepareStatement(sqlCreateDB)) {
@@ -80,7 +80,7 @@ public class Database {
     }
 
     /**
-     * Initialises the Hibernate instance and related credentials. All classes in the "db.model" package are added as
+     * initialises the Hibernate instance and related credentials. All classes in the "db.model" package are added as
      * Hibernate class mappings.
      *
      * @throws ExceptionInInitializerError When Hibernate fails to be initialised.
@@ -214,10 +214,7 @@ public class Database {
             return foundDatabaseEntity == null ? Optional.empty() : Optional.of(foundDatabaseEntity);
         }, true);
 
-        if (response.isEmpty()) {
-            return null;
-        }
-        return response.get();
+        return response.orElse(null);
     }
 
     /**
@@ -233,10 +230,7 @@ public class Database {
             return Optional.of(query.getResultList());
         }, true);
 
-        if (response.isEmpty()) {
-            return null;
-        }
-        return response.get();
+        return response.orElse(null);
     }
 
     /**

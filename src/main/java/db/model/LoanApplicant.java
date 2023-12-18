@@ -34,11 +34,11 @@ public class LoanApplicant implements Serializable {
     @Column(name = "email_address")
     private String emailAddress;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "loanApplicant")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "loanApplicant", fetch = FetchType.EAGER)
     @Column(name = "income_sources")
     private List<IncomeSource> incomeSources;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "loanApplicant")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "loanApplicant", fetch = FetchType.EAGER)
     @Column(name = "recurring_expenses")
     private List<RecurringExpense> recurringExpenses;
 
@@ -47,19 +47,22 @@ public class LoanApplicant implements Serializable {
     }
 
     // Constructor when ID is not known (for record creation)
-    public LoanApplicant(String firstName, String lastName, LocalDate dateOfBirth, String mobileNumber, String emailAddress) {
+    public LoanApplicant(String firstName, String lastName, LocalDate dateOfBirth, String mobileNumber,
+                         String emailAddress, List<IncomeSource> incomeSources,
+                         List<RecurringExpense> recurringExpenses) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.mobileNumber = mobileNumber;
         this.emailAddress = emailAddress;
-        this.incomeSources = new ArrayList<>();
-        this.recurringExpenses = new ArrayList<>();
+        this.incomeSources = incomeSources;
+        this.recurringExpenses = recurringExpenses;
     }
 
     // Constructor when ID is known (for record updating)
     public LoanApplicant(Long id, String firstName, String lastName, LocalDate dateOfBirth, String mobileNumber,
-                         String emailAddress) {
+                         String emailAddress, List<IncomeSource> incomeSources,
+                         List<RecurringExpense> recurringExpenses) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

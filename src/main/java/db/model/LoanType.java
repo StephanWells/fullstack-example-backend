@@ -1,6 +1,6 @@
 package db.model;
 
-import defs.AcceptedLoanType;
+import defs.enums.AcceptedLoanType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -24,7 +24,7 @@ public class LoanType {
 
     public LoanType() {
     }
-    
+
     public LoanType(@NotNull AcceptedLoanType loanType) {
         this.loanName = loanType.loanName;
         this.loanPurchase = loanType.loanPurchase;

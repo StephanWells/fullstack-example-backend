@@ -1,4 +1,4 @@
-package util;
+package util.config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +16,7 @@ public class Props {
     private static final Logger logger = LogManager.getLogger(Props.class);
 
     /**
-     * Initialises the props instance. This method will load the application.properties file and store it internally.
+     * initialises the props instance. This method will load the application.properties file and store it internally.
      */
     public static void initialise() {
         props = new Properties();
@@ -47,6 +47,14 @@ public class Props {
 
     public static String getDbName() {
         return props.getProperty("db.name");
+    }
+
+    public static int getApiPort() {
+        return Integer.parseInt(props.getProperty("api.port"));
+    }
+
+    public static String getApiHost() {
+        return props.getProperty("api.host");
     }
 }
 

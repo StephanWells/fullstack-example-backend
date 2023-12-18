@@ -1,6 +1,6 @@
 package db.model;
 
-import defs.AcceptedCurrency;
+import defs.enums.AcceptedCurrency;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

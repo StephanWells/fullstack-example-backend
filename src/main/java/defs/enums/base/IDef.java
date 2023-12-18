@@ -1,4 +1,4 @@
-package defs.base;
+package defs.enums.base;
 
 /**
  * An interface for implementing enum definitions, e.g. currencies or loan types.

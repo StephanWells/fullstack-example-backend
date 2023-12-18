@@ -18,6 +18,7 @@
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Root>
-        <Logger name="org.hibernate" additivity="false" level="error"/>
+        <Logger name="org.hibernate" additivity="false" level="info"/>
+        <Logger name="org.eclipse.jetty" additivity="false" level="info"/>
     </Loggers>
 </Configuration>

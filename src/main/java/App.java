@@ -1,60 +1,59 @@
+import api.controller.CurrencyController;
+import api.controller.LoanApplicantController;
+import api.controller.LoanController;
+import api.controller.LoanTypeController;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import db.Database;
-import db.dao.*;
-import db.model.*;
-import defs.AcceptedCurrency;
-import defs.AcceptedLoanType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import util.Props;
+import spark.Spark;
+import util.config.Props;
+import util.typeadapters.LocalDateTypeAdapter;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 
 public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
 
+    /**
+     * Main class - the app starts here.
+     *
+     * @param args Arguments to pass in when running the application.
+     */
     public static void main(String[] args) {
+        System.setProperty("log4j.configurationFile", "log4j2.xml");
         Props.initialise();
         Database.initialise();
-        LoanApplicantDAO dao = new LoanApplicantDAO();
-        LoanApplicant loanApplicant = new LoanApplicant(
-            "John",
-            "Doe",
-            LocalDate.of(1995, 5, 15),
-            "+35679389379",
-            "johndoe@hotmail.com"
-        );
-        LoanType loanType = new LoanType(AcceptedLoanType.HOME);
-        Currency currency = new Currency(AcceptedCurrency.US_DOLLARS);
+        startApi();
+    }
 
-        IncomeSource incomeSource1 = new IncomeSource(loanApplicant, "Salary", 5000.0);
-        IncomeSource incomeSource2 = new IncomeSource(loanApplicant, "Bonus", 1000.0);
+    /**
+     * Starts the API to listen for requests.
+     */
+    public static void startApi() {
+        Spark.ipAddress(Props.getApiHost());
+        Spark.port(Props.getApiPort());
+        Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+            .create();
 
-        RecurringExpense recurringExpense1 = new RecurringExpense(loanApplicant, "Rent", 1500.0, currency);
-        RecurringExpense recurringExpense2 = new RecurringExpense(loanApplicant, "Utilities", 200.0, currency);
+        // Loan Applicants
+        LoanApplicantController loanApplicantController = new LoanApplicantController(gson);
+        loanApplicantController.init();
 
-        // Save entities to the database using DAOs
-        new LoanApplicantDAO().save(loanApplicant);
-        new LoanTypeDAO().save(loanType);
-        new CurrencyDAO().save(currency);
-        new IncomeSourceDAO().save(incomeSource1);
-        new IncomeSourceDAO().save(incomeSource2);
-        new RecurringExpenseDAO().save(recurringExpense1);
-        new RecurringExpenseDAO().save(recurringExpense2);
+        // Loans
+        LoanController loanController = new LoanController(gson);
+        loanController.init();
 
-        // Set relationships between entities
-        List<IncomeSource> incomeSources = Arrays.asList(incomeSource1, incomeSource2);
-        List<RecurringExpense> recurringExpenses = Arrays.asList(recurringExpense1, recurringExpense2);
+        // Currencies
+        CurrencyController currencyController = new CurrencyController(gson);
+        currencyController.init();
 
-        // Create a new Loan object
-        Loan loan = new Loan(loanApplicant, loanType, 200000.0, currency);
+        // Loan Types
+        LoanTypeController loanTypeController = new LoanTypeController(gson);
+        loanTypeController.init();
 
-        // Set relationships in the LoanApplicant object
-        loanApplicant.setIncomeSources(incomeSources);
-        loanApplicant.setRecurringExpenses(recurringExpenses);
-
-        // Save the Loan object to the database
-        new LoanDAO().save(loan);
+        Spark.awaitInitialization();
     }
 }

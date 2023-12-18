@@ -2,18 +2,20 @@ package db.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 /**
  * POJO for an recurring expense tied to a loan.
  */
 @Entity
 @Table(name = "recurring_expenses")
-public class RecurringExpense {
+public class RecurringExpense implements Serializable {
     @Id
     @Column(name = "expense_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "applicant_id")
     private LoanApplicant loanApplicant;
 
@@ -23,7 +25,7 @@ public class RecurringExpense {
     @Column(name = "monthly_expense")
     private double monthlyExpense;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "currency")
     private Currency currency;
 

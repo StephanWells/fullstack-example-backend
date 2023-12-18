@@ -3,10 +3,13 @@ package db.dao;
 import db.Database;
 import db.dao.base.IDAO;
 import db.model.RecurringExpense;
+import defs.errors.BadSyntaxException;
+import defs.errors.IllegalIDFieldException;
+import defs.errors.ServerErrorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import util.Validation;
+import util.function.Validation;
 
 public class RecurringExpenseDAO implements IDAO<RecurringExpense, Long> {
     private static final Logger logger = LogManager.getLogger(RecurringExpenseDAO.class);
@@ -15,12 +18,12 @@ public class RecurringExpenseDAO implements IDAO<RecurringExpense, Long> {
      * Validates fields of a recurring expense.
      *
      * @param recurringExpense The recurring expense to validate the fields for.
-     * @throws IllegalArgumentException When any of the fields are invalid.
+     * @throws BadSyntaxException When any of the fields are invalid.
      */
     @Override
     public void validate(@NotNull RecurringExpense recurringExpense) throws IllegalArgumentException {
         if (!Validation.isValidMonetaryValue(recurringExpense.getMonthlyExpense())) {
-            throw new IllegalArgumentException("Invalid monthly expense");
+            throw new BadSyntaxException("Invalid monthly expense");
         }
     }
 
@@ -28,6 +31,8 @@ public class RecurringExpenseDAO implements IDAO<RecurringExpense, Long> {
      * Saves a recurring expense to the database after validating.
      *
      * @param recurringExpense The recurring expense object to save.
+     * @throws IllegalIDFieldException When the recurring expense ID is already set.
+     * @throws ServerErrorException    When any other error occurs.
      */
     @Override
     public void save(RecurringExpense recurringExpense) {
@@ -37,11 +42,14 @@ public class RecurringExpenseDAO implements IDAO<RecurringExpense, Long> {
                 Database.getInstance().saveEntity(recurringExpense);
                 logger.info("Added recurring expense with ID " + recurringExpense.getId() + " to the database");
             } else {
-                throw new IllegalStateException("Object identifier already set");
+                throw new IllegalIDFieldException("Object identifier already set");
             }
+        } catch (IllegalIDFieldException e) {
+            throw (e);
         } catch (Exception e) {
             logger.error("Error saving recurring expense with ID " + recurringExpense.getId() + ". Error: " + e.getMessage());
             e.printStackTrace();
+            throw new ServerErrorException(e.getMessage());
         }
     }
 }

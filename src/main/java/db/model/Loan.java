@@ -30,10 +30,21 @@ public class Loan {
     @JoinColumn(name = "currency")
     private Currency currency;
 
+    // Default constructor
     public Loan() {
     }
 
+    // Constructor when ID is not known (for record creation)
     public Loan(LoanApplicant loanApplicant, LoanType loanType, double valueOfPurchase, Currency currency) {
+        this.loanApplicant = loanApplicant;
+        this.loanType = loanType;
+        this.valueOfPurchase = valueOfPurchase;
+        this.currency = currency;
+    }
+
+    // Constructor when ID is known (for record updating)
+    public Loan(Long id, LoanApplicant loanApplicant, LoanType loanType, double valueOfPurchase, Currency currency) {
+        this.id = id;
         this.loanApplicant = loanApplicant;
         this.loanType = loanType;
         this.valueOfPurchase = valueOfPurchase;
